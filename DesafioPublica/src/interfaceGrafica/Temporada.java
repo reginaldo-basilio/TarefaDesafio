@@ -1,4 +1,4 @@
-package InterfaceGrafica;
+package interfaceGrafica;
 
 import java.util.List;
 
