@@ -1,4 +1,4 @@
-package BaseDados;
+package Entidades;
 
 public class Pontos {
 
