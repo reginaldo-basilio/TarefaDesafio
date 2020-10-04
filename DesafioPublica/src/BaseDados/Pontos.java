@@ -1,23 +1,42 @@
-package InterfaceGrafica;
+package BaseDados;
 
-public class Jogo{
+public class Pontos {
 
+	private int id;
 	private int placar;
 	private int minTemp;
 	private int maxTemp;
 	private int recMin;
-	private int recMax;
+	private int recMax;	
 	
-	public Jogo() {
-		
-	}
+	public Pontos() {
+	}	
 
-	public Jogo(int placar, int minTemp, int maxTemp, int recMin, int recMax) {
+	public Pontos(int placar, int minTemp, int maxTemp, int recMin, int recMax) {
+		super();
 		this.placar = placar;
 		this.minTemp = minTemp;
 		this.maxTemp = maxTemp;
 		this.recMin = recMin;
 		this.recMax = recMax;
+	}
+
+	public Pontos(int id, int placar, int minTemp, int maxTemp, int recMin, int recMax) {
+		super();
+		this.id = id;
+		this.placar = placar;
+		this.minTemp = minTemp;
+		this.maxTemp = maxTemp;
+		this.recMin = recMin;
+		this.recMax = recMax;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public int getPlacar() {
@@ -62,9 +81,4 @@ public class Jogo{
 	
 	
 	
-	
-
-	
-	
-	//Verificar a necessidade do toString
 }

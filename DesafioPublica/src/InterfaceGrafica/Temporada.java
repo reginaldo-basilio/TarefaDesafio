@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Temporada {
 	
-	private List<Jogo> jogos;
+	private List<Pontuacao> pontos;
 	
 	public Temporada() {
 		
