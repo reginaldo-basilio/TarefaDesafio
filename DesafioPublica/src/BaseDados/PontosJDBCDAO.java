@@ -3,6 +3,8 @@ package BaseDados;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 public class PontosJDBCDAO implements PontosDAO{
 
@@ -35,55 +37,18 @@ private JDBCUtil banco;
 		
 	}
 
-//	@Override
-//	public void remover(Anotacao pontos) {
-//		String sql = "delete from anotacao where id = ?";
-//		PreparedStatement ps;
-//		try {
-//			ps = banco.getConnection().prepareStatement(sql);
-//			ps.setInt(1, pontos.getId());
-//			ps.execute();			
-//		}
-//		catch (Exception e) {			 
-//			 e.printStackTrace();
-//		}		
-//	}
-//
-//	@Override
-//	public void atualizar(Anotacao anotacao) {
-//		String sql = "update anotacao set titulo = ?, descricao = ? where id = ?";
-//		PreparedStatement ps;
-//		try {
-//			ps = banco.getConnection().prepareStatement(sql);
-//			ps.setString(1, anotacao.getTitulo());
-//			ps.setString(2, anotacao.getDescricao());
-//			ps.setInt(3, anotacao.getId());
-//			ps.execute();			
-//		}
-//		catch (Exception e) {			 
-//			 e.printStackTrace();
-//		}		
-//	}
-//	
-//	@Override
-//	public List<Anotacao> listar() {
-//		ArrayList<Anotacao> notas = new ArrayList<Anotacao>();
-//		String sql = "select * from pais;";
-//		try {
-//			Statement st = banco.getConnection().createStatement();
-//			ResultSet rs = st.executeQuery(sql);
-//			while(rs.next()) {
-//				Anotacao nota = new Anotacao();
-//				nota.setId(rs.getInt(1));
-//				nota.setTitulo(rs.getString(2));
-//				nota.setDescricao(rs.getString(3));
-//				notas.add(nota);
-//			}
-//		} catch (SQLException e) {			
-//			e.printStackTrace();
-//		}
-//		return notas;
-//	}
-
+	@Override
+	public ResultSet listar() {
+		ArrayList<Pontos> notas = new ArrayList<Pontos>();
+		String sql = "select id as 'Jogo', placar as Placar, minTemp as 'Mínimo na temporada', maxTemp as 'Máximo na temporada', recMin as 'Recorde Mínimo', recMax as 'Recorde Máximo' from Pontos;";
+		try {
+			Statement st = banco.getConnection().createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			return rs;
+		} catch (SQLException e) {			
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 }
