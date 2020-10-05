@@ -149,8 +149,6 @@ public class Tela extends JFrame implements ActionListener {
 		}
 	
 	
-	
-
 	private void carregarDados() {
 		var result = dao.listar();
 		table.setModel(DbUtils.resultSetToTableModel(result));
