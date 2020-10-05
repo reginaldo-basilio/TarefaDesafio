@@ -13,6 +13,7 @@ import javax.swing.border.EmptyBorder;
 import BaseDados.PontosDAO;
 import BaseDados.PontosJDBCDAO;
 import Entidades.Pontos;
+import Logica.GerenciadoraPontos;
 import net.proteanit.sql.DbUtils;
 
 import javax.swing.JTable;
@@ -33,7 +34,7 @@ public class Tela extends JFrame implements ActionListener {
 	private JButton btnConfirmar;
 	private JButton btnIniciar;
 	private JLabel lblQuantosPontosVoc;
-
+	private GerenciadoraPontos gerenciadora;
 	/**
 	 * Launch the application.
 	 */
@@ -55,6 +56,7 @@ public class Tela extends JFrame implements ActionListener {
 	 */
 	public Tela() {
 		dao = new PontosJDBCDAO();
+		gerenciadora = new GerenciadoraPontos();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 794, 562);
 		contentPane = new JPanel();
@@ -74,6 +76,7 @@ public class Tela extends JFrame implements ActionListener {
 		carregarDados();
 	}
 	
+	//INICIA UM NOVO JOGO AO CLICAR NO BOTAO "INICIAR JOGO"
 	private void criarIniciarJogo() {
 		btnIniciar = new JButton("Iniciar Jogo");
 		btnIniciar.addActionListener(this);
@@ -81,6 +84,7 @@ public class Tela extends JFrame implements ActionListener {
 		btnIniciar.setBounds(338, 333, 117, 25);
 	}
 	
+	//AO INICIAR JOGO O TEXTFIELD É HABILITADO PARA RECEBER O PLACAR
 	private void criarInsercaoPlacar() {
 		
 		textField = new JTextField();
@@ -130,47 +134,21 @@ public class Tela extends JFrame implements ActionListener {
 		
 		List<Pontos> pontos = dao.listaPontos();
 		
-		if(pontos.isEmpty()) {
-			var pontosInseridos = Integer.parseInt(textField.getText());
-			var pontosASalvar = new Pontos(pontosInseridos, pontosInseridos, pontosInseridos, 0, 0);
-			dao.salvar(pontosASalvar);
-			textField.setText("");
-		}
-		// SE TIVER UM OU MAIS REGISTROS, CALCULAR QUAL O NOVO RECORDE, MÁXIMO DA TEMPORADA ETC
-		else {
-			atualizaDados(pontos);
+			if(pontos.isEmpty()) {
+				var pontosInseridos = Integer.parseInt(textField.getText());
+				var pontosASalvar = new Pontos(pontosInseridos, pontosInseridos, pontosInseridos, 0, 0);
+				dao.salvar(pontosASalvar);
+				textField.setText("");
 			}
+			// SE TIVER UM OU MAIS REGISTROS, CALCULAR QUAL O NOVO RECORDE, MÁXIMO DA TEMPORADA ETC
+			else {
+				var pontosInseridos = Integer.parseInt(textField.getText());
+				Pontos novaPontuacao = gerenciadora.obterNovaPontuacao(pontos, pontosInseridos);
+				dao.salvar(novaPontuacao);
+				}
 		}
 	
-	private void atualizaDados(List<Pontos> pontos) {
-		var pontosInseridos = Integer.parseInt(textField.getText());
-		Pontos novaPontuacao = new Pontos();
-		Pontos p = pontos.get(pontos.size()-1);
-		if(pontosInseridos < p.getMinTemp()) {
-			novaPontuacao.setPlacar(pontosInseridos);
-			novaPontuacao.setMinTemp(pontosInseridos);
-			novaPontuacao.setMaxTemp(p.getMaxTemp());
-			novaPontuacao.setRecMin(p.getRecMin()+1);
-			novaPontuacao.setRecMax(p.getRecMax());
-			dao.salvar(novaPontuacao);
-			
-		}else if(pontosInseridos > p.getMaxTemp()) {
-			novaPontuacao.setPlacar(pontosInseridos);
-			novaPontuacao.setMinTemp(p.getMinTemp());
-			novaPontuacao.setMaxTemp(pontosInseridos);
-			novaPontuacao.setRecMin(p.getRecMin());
-			novaPontuacao.setRecMax(p.getRecMax()+1);
-			dao.salvar(novaPontuacao);
-		}else {
-			novaPontuacao.setPlacar(pontosInseridos);
-			novaPontuacao.setMinTemp(p.getMinTemp());
-			novaPontuacao.setMaxTemp(p.getMaxTemp());
-			novaPontuacao.setRecMin(p.getRecMin());
-			novaPontuacao.setRecMax(p.getRecMax());
-			dao.salvar(novaPontuacao);
-		}
-		
-	}
+	
 	
 
 	private void carregarDados() {

@@ -8,5 +8,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="/home/regi_user/Documentos/SEMESTRE 4/PRATICAS I/Conexao Banco de Dados/mysql-connector-java-5.1.48/mysql-connector-java-5.1.48-bin.jar"/>
 	<classpathentry kind="lib" path="/home/regi_user/Documentos/rs2xml.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
