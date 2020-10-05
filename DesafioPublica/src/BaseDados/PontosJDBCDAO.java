@@ -5,6 +5,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
+
+import Entidades.Pontos;
 
 public class PontosJDBCDAO implements PontosDAO{
 
@@ -16,7 +19,7 @@ private JDBCUtil banco;
 
 	@Override
 	public int salvar(Pontos pontos) {
-		String sql = "insert into anotacao (placar, minTemp, maxTemp, recMin, recMax) values (?, ?, ?, ?, ?);";		
+		String sql = "insert into pontuacao (placar, minTemp, maxTemp, recMin, recMax) values (?, ?, ?, ?, ?);";		
 		PreparedStatement ps;
 		try {
 			ps = banco.getConnection().prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);	
@@ -40,7 +43,7 @@ private JDBCUtil banco;
 	@Override
 	public ResultSet listar() {
 		ArrayList<Pontos> notas = new ArrayList<Pontos>();
-		String sql = "select id as 'Jogo', placar as Placar, minTemp as 'Mínimo na temporada', maxTemp as 'Máximo na temporada', recMin as 'Recorde Mínimo', recMax as 'Recorde Máximo' from Pontos;";
+		String sql = "select id as 'Jogo', placar as Placar, minTemp as 'Mínimo na temporada', maxTemp as 'Máximo na temporada', recMin as 'Recorde Mínimo', recMax as 'Recorde Máximo' from pontuacao;";
 		try {
 			Statement st = banco.getConnection().createStatement();
 			ResultSet rs = st.executeQuery(sql);
@@ -49,6 +52,29 @@ private JDBCUtil banco;
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	@Override
+	public List<Pontos> listaPontos() {
+		ArrayList<Pontos> pontos = new ArrayList<Pontos>();
+		String sql = "select * from pontuacao;";
+		try {
+			Statement st = banco.getConnection().createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			while(rs.next()) {
+				Pontos ponto = new Pontos();
+				ponto.setId(rs.getInt(1));
+				ponto.setPlacar(rs.getInt(2));
+				ponto.setMinTemp(rs.getInt(3));
+				ponto.setMaxTemp(rs.getInt(4));
+				ponto.setRecMin(rs.getInt(5));
+				ponto.setRecMax(rs.getInt(6));
+				pontos.add(ponto);
+			}
+		} catch (SQLException e) {			
+			e.printStackTrace();
+		}
+		return pontos;
 	}
 	
 }

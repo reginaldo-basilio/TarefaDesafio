@@ -3,6 +3,7 @@ package interfaceGrafica;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -126,14 +127,51 @@ public class Tela extends JFrame implements ActionListener {
 
 	private void atualizarBanco() {
 		// SE NÃO TIVER NENHUM REGISTRO
-		if(true) {
+		
+		List<Pontos> pontos = dao.listaPontos();
+		
+		if(pontos.isEmpty()) {
 			var pontosInseridos = Integer.parseInt(textField.getText());
-			var pontosASalvar = new Pontos(pontosInseridos, pontosInseridos, pontosInseridos, pontosInseridos, pontosInseridos);
+			var pontosASalvar = new Pontos(pontosInseridos, pontosInseridos, pontosInseridos, 0, 0);
 			dao.salvar(pontosASalvar);
 			textField.setText("");
 		}
 		// SE TIVER UM OU MAIS REGISTROS, CALCULAR QUAL O NOVO RECORDE, MÁXIMO DA TEMPORADA ETC
+		else {
+			atualizaDados(pontos);
+			}
+		}
+	
+	private void atualizaDados(List<Pontos> pontos) {
+		var pontosInseridos = Integer.parseInt(textField.getText());
+		Pontos novaPontuacao = new Pontos();
+		Pontos p = pontos.get(pontos.size()-1);
+		if(pontosInseridos < p.getMinTemp()) {
+			novaPontuacao.setPlacar(pontosInseridos);
+			novaPontuacao.setMinTemp(pontosInseridos);
+			novaPontuacao.setMaxTemp(p.getMaxTemp());
+			novaPontuacao.setRecMin(p.getRecMin()+1);
+			novaPontuacao.setRecMax(p.getRecMax());
+			dao.salvar(novaPontuacao);
+			
+		}else if(pontosInseridos > p.getMaxTemp()) {
+			novaPontuacao.setPlacar(pontosInseridos);
+			novaPontuacao.setMinTemp(p.getMinTemp());
+			novaPontuacao.setMaxTemp(pontosInseridos);
+			novaPontuacao.setRecMin(p.getRecMin());
+			novaPontuacao.setRecMax(p.getRecMax()+1);
+			dao.salvar(novaPontuacao);
+		}else {
+			novaPontuacao.setPlacar(pontosInseridos);
+			novaPontuacao.setMinTemp(p.getMinTemp());
+			novaPontuacao.setMaxTemp(p.getMaxTemp());
+			novaPontuacao.setRecMin(p.getRecMin());
+			novaPontuacao.setRecMax(p.getRecMax());
+			dao.salvar(novaPontuacao);
+		}
+		
 	}
+	
 
 	private void carregarDados() {
 		var result = dao.listar();
