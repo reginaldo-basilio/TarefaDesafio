@@ -126,8 +126,7 @@ public class Tela extends JFrame implements ActionListener {
 		else if(actionName.equalsIgnoreCase("Iniciar Jogo")) {
 			habilitarInsercaoPlacar();
 		}
-	}
-	
+	}	
 
 	private void atualizarBanco() {
 		// SE NÃO TIVER NENHUM REGISTRO
@@ -140,7 +139,7 @@ public class Tela extends JFrame implements ActionListener {
 				dao.salvar(pontosASalvar);
 				textField.setText("");
 			}
-			// SE TIVER UM OU MAIS REGISTROS, CALCULAR QUAL O NOVO RECORDE, MÁXIMO DA TEMPORADA ETC
+			// SE TIVER UM OU MAIS REGISTROS, CALCULAR QUAL O NOVO RECORDE, MENOR E MAIOR PONTUACAO
 			else {
 				var pontosInseridos = Integer.parseInt(textField.getText());
 				Pontos novaPontuacao = gerenciadora.obterNovaPontuacao(pontos, pontosInseridos);
